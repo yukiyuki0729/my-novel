@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="zh-TW"><head>
+<html lang="zh-TW">
+<head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title id="pageTitle">雲端書閣</title>
@@ -30,7 +31,6 @@
       transition: background 0.2s, color 0.2s;
     }
 
-    /* 頂部導航 */
     header {
       background: var(--card-bg);
       border-bottom: 1px solid var(--border);
@@ -67,7 +67,6 @@
       box-sizing: border-box;
     }
 
-    /* 首頁 Hero 區塊 */
     .hero-banner {
       text-align: center;
       padding: 28px 12px 20px;
@@ -84,10 +83,7 @@
       line-height: 1.6;
     }
 
-    /* 搜尋與篩選 */
-    .search-bar {
-      margin: 24px 0 16px;
-    }
+    .search-bar { margin: 24px 0 16px; }
     .search-input {
       width: 100%;
       box-sizing: border-box;
@@ -100,9 +96,7 @@
       outline: none;
       box-shadow: 0 2px 4px rgba(0,0,0,0.02);
     }
-    .search-input:focus {
-      border-color: var(--primary);
-    }
+    .search-input:focus { border-color: var(--primary); }
 
     .tag-list {
       display: flex;
@@ -126,7 +120,6 @@
       border-color: var(--primary);
     }
 
-    /* 書籍卡片清單 */
     .book-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
@@ -147,15 +140,8 @@
       transform: translateY(-3px);
       box-shadow: 0 8px 18px rgba(0,0,0,0.06);
     }
-    .book-card h3 {
-      margin: 0 0 6px 0;
-      font-size: 18px;
-    }
-    .book-card .author {
-      font-size: 13px;
-      color: var(--sub-text);
-      margin-bottom: 12px;
-    }
+    .book-card h3 { margin: 0 0 6px 0; font-size: 18px; }
+    .book-card .author { font-size: 13px; color: var(--sub-text); margin-bottom: 12px; }
     .book-card .desc {
       font-size: 14px;
       color: var(--sub-text);
@@ -176,7 +162,6 @@
       color: var(--sub-text);
     }
 
-    /* 按鈕樣式 */
     .btn {
       background: var(--primary);
       color: #fff;
@@ -200,7 +185,6 @@
     .btn-danger { background: #dc2626; color: white; }
     .btn-danger:hover { background: #b91c1c; }
 
-    /* 閱讀模式 */
     #readerView { display: none; }
     .reader-toolbar {
       display: flex;
@@ -227,18 +211,22 @@
       margin-top: 40px;
     }
 
-    /* 彈窗樣式 */
+    /* 關鍵修復：所有彈窗預設全部徹底隱藏 */
     .modal-backdrop {
-      display: none;
+      display: none !important;
       position: fixed;
       inset: 0;
-      background: rgba(0,0,0,0.5);
+      background: rgba(0,0,0,0.55);
       z-index: 100;
       align-items: center;
       justify-content: center;
       padding: 16px;
       box-sizing: border-box;
     }
+    .modal-backdrop.is-active {
+      display: flex !important;
+    }
+
     .modal-box {
       background: var(--card-bg);
       color: var(--text);
@@ -246,7 +234,7 @@
       padding: 24px;
       width: 100%;
       max-width: 480px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
     }
     .modal-box-lg {
       max-width: 820px;
@@ -254,10 +242,7 @@
       overflow-y: auto;
     }
 
-    /* 管理員專區表單 */
-    .form-group {
-      margin-bottom: 16px;
-    }
+    .form-group { margin-bottom: 16px; }
     .form-group label {
       display: block;
       font-size: 14px;
@@ -274,12 +259,8 @@
       color: var(--text);
       font-size: 14px;
     }
-    textarea.form-control {
-      min-height: 80px;
-      resize: vertical;
-    }
+    textarea.form-control { min-height: 80px; resize: vertical; }
 
-    /* 頁尾 */
     footer {
       text-align: center;
       padding: 24px;
@@ -293,7 +274,7 @@
 
 <!-- 頂部列 -->
 <header>
-  <!-- 站點標題：連續快速點擊 5 次可喚醒管理員登入視窗 -->
+  <!-- 站點標題：連續快速點擊 5 次可開啟管理員視窗 -->
   <div class="site-brand" onclick="handleSecretClick()">
     <span style="font-size: 22px;">📚</span>
     <h1 id="brandTitle">雲端書閣</h1>
@@ -305,7 +286,7 @@
 </header>
 
 <div class="container">
-  <!-- 首頁視圖 -->
+  <!-- 首頁書架 -->
   <div id="homeView">
     <div class="hero-banner">
       <h2 id="homeHeading">歡迎來到雲端書閣</h2>
@@ -316,21 +297,11 @@
       <input type="text" id="searchInput" class="search-input" placeholder="🔍 搜尋書名、作者、內文或標籤..." oninput="handleSearch()">
     </div>
 
-    <div class="tag-list" id="tagContainer"><button class="tag-btn active">全部</button><button class="tag-btn">古風</button><button class="tag-btn">言情</button></div>
-    <div class="book-grid" id="bookGrid"><div class="book-card">
-        <div>
-          <h3>江海寄餘生</h3>
-          <div class="author">作者：文墨生</div>
-          <div class="desc">少年仗劍天涯，歷經波折，終在煙雨江畔尋得心中歸宿。</div>
-        </div>
-        <div class="book-meta">
-          <span>#古風 #言情</span>
-          <span>共 2 章</span>
-        </div>
-      </div></div>
+    <div class="tag-list" id="tagContainer"></div>
+    <div class="book-grid" id="bookGrid"></div>
   </div>
 
-  <!-- 目錄視圖 -->
+  <!-- 書籍目錄視圖 -->
   <div id="detailView" style="display:none;">
     <button class="btn btn-outline" style="margin-bottom:16px;" onclick="showHome()">← 返回書庫</button>
     <h2 id="detailTitle" style="margin: 0 0 6px 0;"></h2>
@@ -341,7 +312,7 @@
     <div id="chapterList" style="display:flex; flex-direction:column; gap:10px;"></div>
   </div>
 
-  <!-- 閱讀視圖 -->
+  <!-- 閱讀章節視圖 -->
   <div id="readerView">
     <div class="reader-toolbar">
       <button class="btn btn-outline" onclick="showDetail()">← 返回目錄</button>
@@ -361,9 +332,11 @@
   </div>
 </div>
 
-<footer id="footerText">© 2026 雲端書閣 · 個人小說收藏</footer>
+<footer id="footerText">
+  © 2026 雲端書閣 · 個人小說收藏
+</footer>
 
-<!-- 讀者輸入密碼解鎖彈窗 -->
+<!-- 讀者輸入密碼解鎖彈窗（預設完全關閉） -->
 <div id="readerAuthModal" class="modal-backdrop">
   <div class="modal-box">
     <h3 style="margin-top:0;">🔐 輸入閱讀密碼</h3>
@@ -376,8 +349,8 @@
   </div>
 </div>
 
-<!-- 站長管理員登入彈窗（隱藏暗號喚醒） -->
-<div id="adminAuthModal" class="modal-backdrop" style="display: none;">
+<!-- 站長管理員登入彈窗（預設完全關閉） -->
+<div id="adminAuthModal" class="modal-backdrop">
   <div class="modal-box">
     <h3 style="margin-top:0;">🛡️ 站長身分驗證</h3>
     <p style="font-size:14px; color:var(--sub-text);">請輸入管理員密碼以進入後台編輯與發布介面：</p>
@@ -389,15 +362,15 @@
   </div>
 </div>
 
-<!-- 站長管理後台彈窗 -->
-<div id="adminPanelModal" class="modal-backdrop" style="display: flex;">
+<!-- 站長管理後台彈窗（預設完全關閉） -->
+<div id="adminPanelModal" class="modal-backdrop">
   <div class="modal-box modal-box-lg">
     <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--border); padding-bottom:12px; margin-bottom:20px;">
       <h2 style="margin:0;">⚙️ 站長管理專區</h2>
       <button class="btn btn-outline" onclick="closeModal('adminPanelModal')">✕ 關閉</button>
     </div>
 
-    <!-- 首頁資訊自訂設定 -->
+    <!-- 首頁資訊設定 -->
     <h3 style="margin-top:0;">🏠 首頁網站資訊設定</h3>
     <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
       <div class="form-group">
@@ -461,7 +434,7 @@
       <h3 style="margin-top:0; color:var(--primary);">更新完成？一鍵下載部署檔！</h3>
       <p style="font-size:14px; color:var(--sub-text); margin-bottom:16px;">
         點擊下方按鈕，系統會把所有修改（包含首頁資訊、小說內容、密碼）直接封裝成最新的 <b>index.html</b> 下載到電腦。<br>
-        接著只需把它拖曳到 Vercel 重新覆蓋，所有人的網站就立刻更新完畢！
+        接著只需把它放上 GitHub，網站就立刻自動更新完畢！
       </p>
       <button class="btn" style="padding:12px 28px; font-size:16px;" onclick="downloadUpdatedHTML()">💾 儲存並下載最新 index.html</button>
     </div>
@@ -469,23 +442,35 @@
 </div>
 
 <script>
-  /* -------------------------------------------------------------
-     全站核心資料庫（單一檔案架構）
-     ------------------------------------------------------------- */
   let siteConfig = {
-  "siteTitle": "墨墨看書",
-  "homeHeading": "歡迎來到墨墨藏書閣",
-  "homeSubheading": "閒看庭前花開花落，漫隨天外雲卷雲舒。",
-  "footerText": "個人小說收藏",
-  "readerPassword": "0729",
-  "adminPassword": "mavis0511"
-};
+    siteTitle: "雲端書閣",
+    homeHeading: "歡迎來到雲端書閣",
+    homeSubheading: "閒看庭前花開花落，漫隨天外雲卷雲舒。",
+    footerText: "© 2026 雲端書閣 · 個人小說收藏",
+    readerPassword: "8888",      // 讀者閱讀密碼
+    adminPassword: "admin888"     // 站長管理密碼
+  };
 
-  let books = [];
+  let books = [
+    {
+      id: "b1",
+      title: "江海寄餘生",
+      author: "文墨生",
+      tags: ["古風", "言情"],
+      desc: "少年仗劍天涯，歷經波折，終在煙雨江畔尋得心中歸宿。",
+      chapters: [
+        {
+          title: "第一章：煙雨渡口",
+          content: "那一年的渡口，雨絲微涼。\n江面泛起一層薄霧，青石板路上長滿青苔。\n他提著一柄略顯殘舊的長劍，靜靜立於烏篷船頭，任由微風吹拂衣袍……"
+        },
+        {
+          title: "第二章：故人相逢",
+          content: "城樓的更鼓敲了三聲。\n燭火搖曳下，屏風後傳來一聲低低的嘆息。\n「多年未見，你果真還是來了。」那人的聲音如舊，只是多了幾分滄桑。"
+        }
+      ]
+    }
+  ];
 
-  /* -------------------------------------------------------------
-     前端狀態控制
-     ------------------------------------------------------------- */
   let isReaderUnlocked = sessionStorage.getItem("is_reader_unlocked") === "true";
   let activeBook = null;
   let activeChapterIdx = 0;
@@ -506,7 +491,7 @@
   function handleSecretClick() {
     clickCounter++;
     clearTimeout(clickTimer);
-    clickTimer = setTimeout(() => { clickCounter = 0; }, 2000);
+    clickTimer = setTimeout(() => { clickCounter = 0; }, 1800);
 
     if (clickCounter >= 5) {
       clickCounter = 0;
@@ -514,7 +499,6 @@
     }
   }
 
-  // 視圖切換
   function showHome() {
     document.getElementById("homeView").style.display = "block";
     document.getElementById("detailView").style.display = "none";
@@ -623,11 +607,7 @@
     document.body.classList.toggle("theme-dark");
   }
 
-  /* -------------------------------------------------------------
-     渲染首頁與搜尋
-     ------------------------------------------------------------- */
   function renderUI() {
-    // 渲染站點資訊
     document.getElementById("brandTitle").textContent = siteConfig.siteTitle;
     document.getElementById("pageTitle").textContent = siteConfig.siteTitle;
     document.getElementById("homeHeading").textContent = siteConfig.homeHeading;
@@ -695,9 +675,6 @@
     renderBooks(result);
   }
 
-  /* -------------------------------------------------------------
-     管理員專區功能
-     ------------------------------------------------------------- */
   function verifyAdminPassword() {
     const input = document.getElementById("adminPasswordInput").value.trim();
     if (input === siteConfig.adminPassword) {
@@ -710,7 +687,6 @@
   }
 
   function openAdminPanel() {
-    // 填入目前設定
     document.getElementById("adminSiteTitle").value = siteConfig.siteTitle;
     document.getElementById("adminHomeHeading").value = siteConfig.homeHeading;
     document.getElementById("adminHomeSubheading").value = siteConfig.homeSubheading;
@@ -802,9 +778,6 @@
     renderAdminBooks();
   }
 
-  /* -------------------------------------------------------------
-     儲存並產生最新 index.html
-     ------------------------------------------------------------- */
   function syncSettingsFromInputs() {
     siteConfig.siteTitle = document.getElementById("adminSiteTitle").value.trim() || siteConfig.siteTitle;
     siteConfig.homeHeading = document.getElementById("adminHomeHeading").value.trim() || siteConfig.homeHeading;
@@ -817,17 +790,14 @@
   function downloadUpdatedHTML() {
     syncSettingsFromInputs();
 
-    // 取得當前整個 HTML 的文本
     let fullHTML = "<!DOCTYPE html>\n" + document.documentElement.outerHTML;
 
-    // 將最新的 siteConfig 與 books 注入回程式碼中
     const configRegex = /let siteConfig = \{[\s\S]*?\};/;
     const booksRegex = /let books = \[[\s\S]*?\];/;
 
     fullHTML = fullHTML.replace(configRegex, `let siteConfig = ${JSON.stringify(siteConfig, null, 2)};`);
     fullHTML = fullHTML.replace(booksRegex, `let books = ${JSON.stringify(books, null, 2)};`);
 
-    // 下載成 index.html
     const blob = new Blob([fullHTML], { type: "text/html;charset=utf-8" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
@@ -840,16 +810,27 @@
 
     renderUI();
     closeModal('adminPanelModal');
-    alert("🎉 已成功下載最新的 index.html！\n請直接拖曳覆蓋至 Vercel 即可完成更新！");
+    alert("🎉 已成功下載最新的 index.html！\n請直接放上 GitHub 即會自動同步！");
   }
 
-  /* 彈窗工具 */
-  function openModal(id) { document.getElementById(id).style.display = "flex"; }
-  function closeModal(id) { document.getElementById(id).style.display = "none"; }
+  /* 彈窗控制修復 */
+  function openModal(id) {
+    const el = document.getElementById(id);
+    if (el) el.classList.add('is-active');
+  }
+  function closeModal(id) {
+    const el = document.getElementById(id);
+    if (el) el.classList.remove('is-active');
+  }
 
-  // 初始化啟動
+  // 確保一開始所有彈窗都是關閉狀態
+  closeModal('readerAuthModal');
+  closeModal('adminAuthModal');
+  closeModal('adminPanelModal');
+
+  // 啟動首頁
   renderUI();
 </script>
 
-
-</body></html>
+</body>
+</html>
