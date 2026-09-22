@@ -286,7 +286,7 @@
 
 <div class="container">
   <!-- 首頁書架 -->
-  <div id="homeView">
+  <div id="homeView" style="display: none;">
     <div class="hero-banner">
       <h2 id="homeHeading">歡迎來到默默的藏書閣</h2>
       <p id="homeSubheading">閒看庭前花開花落，漫隨天外雲卷雲舒。</p>
@@ -296,23 +296,33 @@
       <input type="text" id="searchInput" class="search-input" placeholder="🔍 搜尋書名、作者、內文或標籤..." oninput="handleSearch()">
     </div>
 
-    <div class="tag-list" id="tagContainer"><button class="tag-btn active">全部</button></div>
-    <div class="book-grid" id="bookGrid"><div style="grid-column: 1/-1; text-align:center; padding: 40px; color:var(--sub-text);">尚無符合條件的書籍</div></div>
+    <div class="tag-list" id="tagContainer"><button class="tag-btn active">全部</button><button class="tag-btn">破鏡重圓、HE、替身文學</button></div>
+    <div class="book-grid" id="bookGrid"><div class="book-card">
+        <div>
+          <h3>《男配》58章刪減部分</h3>
+          <div class="author">作者：喪心病狂的瓜皮</div>
+          <div class="desc">（不全，前面部分在长佩阅读）</div>
+        </div>
+        <div class="book-meta">
+          <span>#破鏡重圓、HE、替身文學</span>
+          <span>共 0 章</span>
+        </div>
+      </div></div>
   </div>
 
   <!-- 書籍目錄視圖 -->
-  <div id="detailView" style="display:none;">
+  <div id="detailView" style="display: block;">
     <button class="btn btn-outline" style="margin-bottom:16px;" onclick="showHome()">← 返回書庫</button>
-    <h2 id="detailTitle" style="margin: 0 0 6px 0;"></h2>
-    <div id="detailAuthor" style="color:var(--sub-text); margin-bottom:16px; font-size:14px;"></div>
-    <p id="detailDesc" style="line-height:1.7; margin-bottom:24px; color:var(--text);"></p>
+    <h2 id="detailTitle" style="margin: 0 0 6px 0;">《男配》58章刪減部分</h2>
+    <div id="detailAuthor" style="color:var(--sub-text); margin-bottom:16px; font-size:14px;">作者：喪心病狂的瓜皮</div>
+    <p id="detailDesc" style="line-height:1.7; margin-bottom:24px; color:var(--text);">（不全，前面部分在长佩阅读）</p>
     
     <h3 style="border-bottom: 1px solid var(--border); padding-bottom:8px;">章節目錄</h3>
     <div id="chapterList" style="display:flex; flex-direction:column; gap:10px;"></div>
   </div>
 
   <!-- 閱讀章節視圖 -->
-  <div id="readerView">
+  <div id="readerView" style="display: none;">
     <div class="reader-toolbar">
       <button class="btn btn-outline" onclick="showDetail()">← 返回目錄</button>
       <div style="display:flex; gap:8px; align-items:center;">
@@ -431,8 +441,13 @@
         </div>
         <p style="font-size:13px; color:var(--sub-text); margin: 6px 0 10px 0;">（不全，前面部分在长佩阅读）</p>
         <div style="margin-top:8px;">
-          <small style="font-weight:600;">章節列表 (0)</small>
-          <div style="font-size:12px; color:var(--sub-text);">尚無章節</div>
+          <small style="font-weight:600;">章節列表 (1)</small>
+          
+        <div style="display:flex; justify-content:space-between; align-items:center; background:var(--card-bg); padding:6px 10px; border-radius:4px; margin-top:6px; font-size:13px; border:1px solid var(--border);">
+          <span>《男配》58章刪減部分</span>
+          <button class="btn btn-danger" style="padding:2px 8px; font-size:12px;" onclick="deleteAdminChapter(0, 0)">刪除章節</button>
+        </div>
+      
         </div>
         <div style="margin-top:10px; padding:10px; background:var(--card-bg); border-radius:6px; border:1px solid var(--border);">
           <input type="text" id="adminNewChTitle_0" placeholder="新章節名稱 (例如：第三章 白露)" class="form-control" style="margin-bottom:6px; font-size:13px;">
@@ -472,7 +487,12 @@
       "破鏡重圓、HE、替身文學"
     ],
     "desc": "（不全，前面部分在长佩阅读）",
-    "chapters": []
+    "chapters": [
+      {
+        "title": "《男配》58章刪減部分",
+        "content": "谢朗重新环住了黎江也的细腰，男孩虽然下半身都被他刚刚又亲又舔弄得狼狈不堪，饱满的屁股也赤裸地露在外面，可是其实上半身倒仍然好好地穿着那件蓝色的睡衣。\n\n谢朗的另外一只手有些按捺不住了，他从下面开始缓慢地解开了三颗扣子，然后从那散开的睡衣下摆探了进去。\n\n“啊！”\n\n藏在他肩窝的男孩突然闷哼了一声，他的乳首因为被谢朗的手指用力地揉捏着，像花枝一样纤瘦的身体耐不住地轻轻颤抖了起来。\n\n他依然把脸埋着，可却忍不住悄悄反手握住谢朗，企图按住那只在他身上动作的手。\n\n但这么柔情的阻止，在这种时候实在很难起到作用。\n\n谢朗顿住了片刻，紧接着忽然一把把仍然躲在他怀里的男孩重新压在了身下。\n\n黎江也不再被安全地环抱着，而是一下子变成了仰躺在床上的姿势，下意识地就想要把上衣拉得合拢一点。\n\n但下一秒，那件睡衣就已经被谢朗一把扯了开来。\n\n“别——”\n\n黎江也发出了一声紧张地惊呼，这一次他抓住谢朗的手的力道一下子用力多了。\n\n月光之下，他的睡衣完全被打开来了。\n\n黎江也常年练舞，虽然平时看起来纤瘦，但肩膀宽而平整、线条优美，并不全然是单薄的体态，只有到了腰身处才惊心动魄地收束下去，细窄得像是可以被谢朗用一只手臂环住。\n\n这具赤裸裸的肉体，其实骨相和身形都完全是男性化的。\n\n但唯独胸口上的乳晕天生就比一般的男孩要大上不止一圈，圆得饱满，粉得晃眼，就这么颤颤地坠在白皙而平坦的胸脯上，那是充满了肉欲的皮相。\n\n“朗哥……”\n\n黎江也忍不住唤了一声：“这里，是不是……”\n\n他不知道该怎么解释，其实一直因为这个有些在意，说不上为什么，只是偶尔照镜子的时候，觉得那么醒目的乳晕很羞耻。\n\n“嗯？”\n\n谢朗俯下身，几乎是贴着他的脸孔问。\n\n“是不是很不像男孩？”黎江也第一次这么怯怯地问出了口。在以往的那些性事中，每一次抚摸、进入，都像是一件他必须要完成的事，因为只有完成了，他才能和谢朗更近一点。\n\n也因此，这样从青春期就令他苦恼的、羞怯的小问题，他从来没有空间、没有机会去问出来。\n\n“怎么会？”谢朗非常诧异。\n\n“就……比别人大嘛。”黎江也的声音越来越小了，像是在谢朗的耳边说悄悄话。作为男孩，乳头并不该是多么吸引人的性征，可他偏偏、偏偏就长成了这样。\n\n“哦。”谢朗被问得心猿意马，但还是答道：“小也，我没看过别人的。但是……你比我的大。”\n\n“……”黎江也的脸一下子红了。\n\n这他当然知道啊。他有些难为情地想。\n\n谢朗停顿了一下，他甚至认真地想象了一下，脑中那画面乏味得令他皱眉，乳晕小怎么会好看？\n\n“小也，小的不好看——”他一边这样说，一边低下头，含住了黎江也的乳首，那里那么柔软，娇小的乳头一被刺激就无比敏感地立了起来，那样小小的一颗抵在他的舌尖，有种美好的口感。\n\n谢朗含糊地继续道：“你这样的才好看。”\n\n“噢……”\n\n黎江也发出了一种，没办法形容的，像小禽鸟轻轻的鸣叫一样的可爱呻吟。\n\n那一瞬间，说不清是谢朗的话，还是那酥麻的快感更让他承受不住，他第一次在性爱中感受到这样的愉悦，不再是要完成某一件事，而是践行着一种美好的亲密。\n\n“小也。”\n\n谢朗再次抬起头的时候，嗓音已经有些沙哑了。\n\n黎江也浅粉色的乳晕被含得肿大了不少，在床单上仰躺着喘息、胸口一起一伏的样子，有种迷人的色情颜色。\n\n他白皙的身体已经在这场漫长的前戏之后彻底地一丝不挂，浑身上下，只有纤长的手腕上还套着那个红色的廉价小塑料圈——\n\n被套回来的小禽鸟。\n\n被剥光的，任人宰割的，被他舔得湿漉漉的。\n\n那一切的美好想象，让谢朗再也无法忍耐，他漆黑的瞳孔第一次像是燃烧起了赤裸裸的火焰。\n\n不需要任何语言，黎江也就已经明白了。\n\n他将自己的双腿分开，然后用双手牢牢地抱住，这个姿势几乎让他的臀部整个抬高凌空——\n\n然后，用一双像是里面刚下过雨的眼睛抬起来望着谢朗。\n\n谢朗不再说话，他低头握住自己从刚才开始就已经硬得发疼的性器，然后抵在了黎江也股间那个窄小湿润的洞口。\n\n谢朗欲望上来的时候和平时不太一样，嘴唇会微微向下抿，锋利的唇峰带着点果决的凶相。\n\n“小也，放松。”\n\n他按住黎江也有些许紧绷的大腿，这一声轻而温柔，但与其说是安抚，不如说是在告知——要进去了。\n\n黎江也没有马上回答，虽然发生了那么多次，可是无论是哪一次，在即将被进入的这一刻，还是会感到熟悉的紧张。\n\n黎江也几乎是眼睁睁看着月光下，谢朗腰身忽然一个抬起用力。\n\n紧接着，下身被打开的那种被撑开的痛楚和不适占据了他混乱的感官。\n\n“唔啊……朗哥，慢一点……”他轻轻地发出一声呜咽。\n\n他抓紧了谢朗撑在他身体两侧的手臂，能感觉到谢朗因为也在极力地隐忍，小臂绷紧得冒出了两根青筋。\n\n“小也，痛吗？”\n\n谢朗低声问。\n\n“……一点点。”\n\n黎江也声音很小，侧过脸不去看谢朗，微微闭上眼睛。\n\n“我很慢，不怕。”\n\n谢朗克制的声音低沉得近乎性感，黎江也能感觉到他俯下身来，轻轻地吻着他的额头，抵在他身体里那根粗大的凶器微微向后了一点，可是在他稍微吸一口气放松的时候，又猛地顶了进来——\n\n这种强势的进攻，让黎江也猝不及防。\n\n他真的很慢。\n\n粗糙的顶端滑过紧窄炙热的甬道，那种缓慢而有力的摩擦快感让黎江也感觉像是被潮水涌过身体。\n\n“哈啊……！”\n\n黎江也大口大口地喘息着，有时候他真的不知道，谢朗到底是会还是不会。\n\n这一切已经全然让他迷惑了，他的眼前有些失神，无意识地叫着：“朗哥，再、再一点……啊啊！”\n\n话断断续续地说到一半，已经变成了一声高亢的呻吟。\n\n谢朗又一次拔出去一点，再次深深地插了进来。\n\n他的尺寸很大，因此下方用身体吞入的男孩会很吃力，但自己大概完全意识不到。\n\n这样猛地整根进入，几乎让黎江也哭了出来，感觉自己的洞口被贯穿，像是整个人都被狠狠地钉在了床上。\n\n“朗哥，那里……呜，那里……”\n\n黎江也已经语无伦次了，他刘海湿漉漉地贴在额头上，难以形容的涨痛，和身体被填满的快感居然可以同时存激烈地在，以至于自己都懵了：“啊！痛，朗哥……”\n\n男孩闭紧眼睛给出了完全混乱的信号。\n\n整个下身几乎都在痉挛，双腿激烈地颤抖着，看上去像是被蹂躏了的花枝，艳丽又可怜。\n\n谢朗怕弄坏他。\n\n他其实非常难受，但这种情况是没办法的，他的呼吸急促而低沉，但还是握着性器缓慢地拔了出来。\n\n“朗哥……？”\n\n黎江也因为身体突然的空虚而茫然地睁开眼睛，但下一秒却几乎整个人都从床上弹了起来：“不行！”\n\n而在这一秒，谢朗已经伏下身去，正在用舌头给他舔股间刚刚被进入过的穴口。\n\n“朗哥，不行！我不要……”\n\n黎江也几乎是抽泣着在拒绝了。\n\n可是身体却完全诉说着不同的语言，那个刚刚被打开的部位被这样温热的舌尖一下一下地舔弄着敏感的褶皱，像是细小的电流从那里涌向四肢。\n\n他的双腿大张开来，白皙的脚趾因为愉悦而紧紧地蜷着，伸出手去攥紧自己腿间被顶得一摇一摇在流水的性器：“呜……你放开，不可以这样的，朗哥，你不能……”\n\n他的大脑一片空白，以至于等谢朗给他舔了一会又爬上来的时候都没反应过来。\n\n谢朗有些好奇地问他：“小也，怎么了？”\n\n男孩那濒临崩溃的模样，红得厉害的眼角，让他有些困惑。\n\n“你不可以……不可以插一半再去舔，”\n\n黎江也呜咽着，近乎是羞耻地道：“脏的。”\n\n没人会这样做爱，谢朗。\n\n“为什么？”\n\n谢朗却完全不理解。\n\n“因为……”\n\n黎江也忽然也懵了。\n\n他脑中有奇怪的对性事的固有观念，以至于下意识地就说了出来，结果现在甚至不知道该怎么解释。\n\n男孩那茫然的泪眼，哽住的声音让谢朗忽然心里一片温柔的绵软——\n\n他们做过那么多次，每一次都是小也主动地牵着他，缠着他，甚至告诉他自己看了什么片。\n\n但原来，小也其实也不那么懂的。\n\n他把黎江也拥入了怀里，在男孩的耳边耐心地说：“不脏。”\n\n谢朗认真地解释着他的性爱：“舔你，再插进去；或者插到一半再舔，都不觉得脏。小也，因为你是宝贝。”"
+      }
+    ]
   }
 ];
 
@@ -836,6 +856,7 @@
   // 啟動首頁
   renderUI();
 </script>
+
 
 
 
