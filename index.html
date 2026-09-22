@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-TW">
-<head>
+<html lang="zh-TW"><head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title id="pageTitle">雲端書閣</title>
@@ -297,8 +296,18 @@
       <input type="text" id="searchInput" class="search-input" placeholder="🔍 搜尋書名、作者、內文或標籤..." oninput="handleSearch()">
     </div>
 
-    <div class="tag-list" id="tagContainer"></div>
-    <div class="book-grid" id="bookGrid"></div>
+    <div class="tag-list" id="tagContainer"><button class="tag-btn active">全部</button><button class="tag-btn">古風</button><button class="tag-btn">言情</button></div>
+    <div class="book-grid" id="bookGrid"><div class="book-card">
+        <div>
+          <h3>江海寄餘生</h3>
+          <div class="author">作者：文墨生</div>
+          <div class="desc">少年仗劍天涯，歷經波折，終在煙雨江畔尋得心中歸宿。</div>
+        </div>
+        <div class="book-meta">
+          <span>#古風 #言情</span>
+          <span>共 2 章</span>
+        </div>
+      </div></div>
   </div>
 
   <!-- 書籍目錄視圖 -->
@@ -332,9 +341,7 @@
   </div>
 </div>
 
-<footer id="footerText">
-  © 2026 雲端書閣 · 個人小說收藏
-</footer>
+<footer id="footerText">© 2026 雲端書閣 · 個人小說收藏</footer>
 
 <!-- 讀者輸入密碼解鎖彈窗（預設完全關閉） -->
 <div id="readerAuthModal" class="modal-backdrop">
@@ -363,7 +370,7 @@
 </div>
 
 <!-- 站長管理後台彈窗（預設完全關閉） -->
-<div id="adminPanelModal" class="modal-backdrop">
+<div id="adminPanelModal" class="modal-backdrop is-active">
   <div class="modal-box modal-box-lg">
     <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--border); padding-bottom:12px; margin-bottom:20px;">
       <h2 style="margin:0;">⚙️ 站長管理專區</h2>
@@ -443,33 +450,15 @@
 
 <script>
   let siteConfig = {
-    siteTitle: "雲端書閣",
-    homeHeading: "歡迎來到雲端書閣",
-    homeSubheading: "閒看庭前花開花落，漫隨天外雲卷雲舒。",
-    footerText: "© 2026 雲端書閣 · 個人小說收藏",
-    readerPassword: "8888",      // 讀者閱讀密碼
-    adminPassword: "admin888"     // 站長管理密碼
-  };
+  "siteTitle": "默默看書",
+  "homeHeading": "歡迎來到默默的藏書閣",
+  "homeSubheading": "閒看庭前花開花落，漫隨天外雲卷雲舒。",
+  "footerText": "個人小說收藏",
+  "readerPassword": "0729",
+  "adminPassword": "mavis0511"
+};
 
-  let books = [
-    {
-      id: "b1",
-      title: "江海寄餘生",
-      author: "文墨生",
-      tags: ["古風", "言情"],
-      desc: "少年仗劍天涯，歷經波折，終在煙雨江畔尋得心中歸宿。",
-      chapters: [
-        {
-          title: "第一章：煙雨渡口",
-          content: "那一年的渡口，雨絲微涼。\n江面泛起一層薄霧，青石板路上長滿青苔。\n他提著一柄略顯殘舊的長劍，靜靜立於烏篷船頭，任由微風吹拂衣袍……"
-        },
-        {
-          title: "第二章：故人相逢",
-          content: "城樓的更鼓敲了三聲。\n燭火搖曳下，屏風後傳來一聲低低的嘆息。\n「多年未見，你果真還是來了。」那人的聲音如舊，只是多了幾分滄桑。"
-        }
-      ]
-    }
-  ];
+  let books = [];
 
   let isReaderUnlocked = sessionStorage.getItem("is_reader_unlocked") === "true";
   let activeBook = null;
@@ -832,5 +821,6 @@
   renderUI();
 </script>
 
-</body>
-</html>
+
+
+</body></html>
