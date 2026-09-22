@@ -2,7 +2,7 @@
 <html lang="zh-TW"><head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title id="pageTitle">雲端書閣</title>
+  <title id="pageTitle">默默看書</title>
   <style>
     :root {
       --bg: #f8f6f0;
@@ -276,7 +276,7 @@
   <!-- 站點標題：連續快速點擊 5 次可開啟管理員視窗 -->
   <div class="site-brand" onclick="handleSecretClick()">
     <span style="font-size: 22px;">📚</span>
-    <h1 id="brandTitle">雲端書閣</h1>
+    <h1 id="brandTitle">默默看書</h1>
   </div>
   <div style="display:flex; gap:8px; align-items:center;">
     <button class="btn btn-outline" style="padding:4px 10px; font-size:12px;" onclick="toggleTheme()">切換日/夜</button>
@@ -288,7 +288,7 @@
   <!-- 首頁書架 -->
   <div id="homeView">
     <div class="hero-banner">
-      <h2 id="homeHeading">歡迎來到雲端書閣</h2>
+      <h2 id="homeHeading">歡迎來到默默的藏書閣</h2>
       <p id="homeSubheading">閒看庭前花開花落，漫隨天外雲卷雲舒。</p>
     </div>
 
@@ -296,18 +296,8 @@
       <input type="text" id="searchInput" class="search-input" placeholder="🔍 搜尋書名、作者、內文或標籤..." oninput="handleSearch()">
     </div>
 
-    <div class="tag-list" id="tagContainer"><button class="tag-btn active">全部</button><button class="tag-btn">古風</button><button class="tag-btn">言情</button></div>
-    <div class="book-grid" id="bookGrid"><div class="book-card">
-        <div>
-          <h3>江海寄餘生</h3>
-          <div class="author">作者：文墨生</div>
-          <div class="desc">少年仗劍天涯，歷經波折，終在煙雨江畔尋得心中歸宿。</div>
-        </div>
-        <div class="book-meta">
-          <span>#古風 #言情</span>
-          <span>共 2 章</span>
-        </div>
-      </div></div>
+    <div class="tag-list" id="tagContainer"><button class="tag-btn active">全部</button></div>
+    <div class="book-grid" id="bookGrid"><div style="grid-column: 1/-1; text-align:center; padding: 40px; color:var(--sub-text);">尚無符合條件的書籍</div></div>
   </div>
 
   <!-- 書籍目錄視圖 -->
@@ -341,7 +331,7 @@
   </div>
 </div>
 
-<footer id="footerText">© 2026 雲端書閣 · 個人小說收藏</footer>
+<footer id="footerText">個人小說收藏</footer>
 
 <!-- 讀者輸入密碼解鎖彈窗（預設完全關閉） -->
 <div id="readerAuthModal" class="modal-backdrop">
@@ -433,8 +423,23 @@
     </div>
     <button class="btn" onclick="addNewBook()">➕ 加入書庫</button>
 
-    <h3 style="margin-top:28px;">📚 現有書籍與章節管理 (<span id="adminBookCount">0</span>)</h3>
-    <div id="adminBookList" style="display:flex; flex-direction:column; gap:14px;"></div>
+    <h3 style="margin-top:28px;">📚 現有書籍與章節管理 (<span id="adminBookCount">1</span>)</h3>
+    <div id="adminBookList" style="display:flex; flex-direction:column; gap:14px;"><div style="border: 1px solid var(--border); border-radius: 8px; padding: 14px; background: var(--bg);">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <strong>《男配》58章刪減部分 <span style="font-size:13px; color:var(--sub-text);">/ 喪心病狂的瓜皮</span></strong>
+          <button class="btn btn-danger" style="padding:3px 10px; font-size:12px;" onclick="deleteAdminBook(0)">刪除整本書</button>
+        </div>
+        <p style="font-size:13px; color:var(--sub-text); margin: 6px 0 10px 0;">（不全，前面部分在长佩阅读）</p>
+        <div style="margin-top:8px;">
+          <small style="font-weight:600;">章節列表 (0)</small>
+          <div style="font-size:12px; color:var(--sub-text);">尚無章節</div>
+        </div>
+        <div style="margin-top:10px; padding:10px; background:var(--card-bg); border-radius:6px; border:1px solid var(--border);">
+          <input type="text" id="adminNewChTitle_0" placeholder="新章節名稱 (例如：第三章 白露)" class="form-control" style="margin-bottom:6px; font-size:13px;">
+          <textarea id="adminNewChContent_0" placeholder="貼上章節小說內文..." class="form-control" style="font-size:13px; min-height:60px;"></textarea>
+          <button class="btn btn-outline" style="margin-top:6px; font-size:12px; padding:4px 10px;" onclick="addAdminChapter(0)">➕ 新增章節</button>
+        </div>
+      </div></div>
 
     <!-- 打包與更新 -->
     <div style="margin-top:36px; padding:20px; background:rgba(139,94,60,0.08); border:1px solid var(--border); border-radius:8px; text-align:center;">
@@ -458,7 +463,18 @@
   "adminPassword": "mavis0511"
 };
 
-  let books = [];
+  let books = [
+  {
+    "id": "b_1790082310629",
+    "title": "《男配》58章刪減部分",
+    "author": "喪心病狂的瓜皮",
+    "tags": [
+      "破鏡重圓、HE、替身文學"
+    ],
+    "desc": "（不全，前面部分在长佩阅读）",
+    "chapters": []
+  }
+];
 
   let isReaderUnlocked = sessionStorage.getItem("is_reader_unlocked") === "true";
   let activeBook = null;
@@ -820,6 +836,7 @@
   // 啟動首頁
   renderUI();
 </script>
+
 
 
 
