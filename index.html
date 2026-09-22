@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="zh-TW"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title id="pageTitle">雲端書閣</title>
+  <style>
+    :root {
+      --bg: #f8f6f0;
+      --card-bg: #ffffff;
+      --text: #2c2523;
+      --sub-text: #706863;
+      --border: #e6dfd5;
+      --primary: #8b5e3c;
+      --primary-hover: #724c30;
+      --accent: #b45309;
+    }
+
+    body.theme-light { --bg: #fcfcfc; --card-bg: #ffffff; --text: #1f2937; --sub-text: #6b7280; --border: #e5e7eb; }
+    body.theme-dark { --bg: #18181b; --card-bg: #27272a; --text: #f4f4f5; --sub-text: #a1a1aa; --border: #3f3f46; --primary: #d97706; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Noto Serif TC", "PingFang TC", "Microsoft JhengHei", serif;
+      background: var(--bg);
+      color: var(--text);
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    /* 頂部導航 */
+    header {
+      background: var(--card-bg);
+      border-bottom: 1px solid var(--border);
+      padding: 16px 24px;
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .site-brand {
+      cursor: pointer;
+      user-select: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .site-brand h1 {
+      margin: 0;
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 24px 16px 80px 16px;
+      flex: 1;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    /* 首頁 Hero 區塊 */
+    .hero-banner {
+      text-align: center;
+      padding: 28px 12px 20px;
+    }
+    .hero-banner h2 {
+      margin: 0 0 10px 0;
+      font-size: 26px;
+      color: var(--text);
+    }
+    .hero-banner p {
+      margin: 0;
+      color: var(--sub-text);
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    /* 搜尋與篩選 */
+    .search-bar {
+      margin: 24px 0 16px;
+    }
+    .search-input {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 12px 18px;
+      border: 1px solid var(--border);
+      border-radius: 30px;
+      background: var(--card-bg);
+      color: var(--text);
+      font-size: 15px;
+      outline: none;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+    }
+    .search-input:focus {
+      border-color: var(--primary);
+    }
+
+    .tag-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 24px;
+    }
+    .tag-btn {
+      border: 1px solid var(--border);
+      background: var(--card-bg);
+      color: var(--sub-text);
+      padding: 5px 12px;
+      border-radius: 16px;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .tag-btn.active, .tag-btn:hover {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+    }
+
+    /* 書籍卡片清單 */
+    .book-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 16px;
+    }
+    .book-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .book-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 18px rgba(0,0,0,0.06);
+    }
+    .book-card h3 {
+      margin: 0 0 6px 0;
+      font-size: 18px;
+    }
+    .book-card .author {
+      font-size: 13px;
+      color: var(--sub-text);
+      margin-bottom: 12px;
+    }
+    .book-card .desc {
+      font-size: 14px;
+      color: var(--sub-text);
+      line-height: 1.6;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      margin-bottom: 16px;
+    }
+    .book-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px dashed var(--border);
+      padding-top: 10px;
+      font-size: 12px;
+      color: var(--sub-text);
+    }
+
+    /* 按鈕樣式 */
+    .btn {
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: background 0.2s;
+    }
+    .btn:hover { background: var(--primary-hover); }
+    .btn-outline {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text);
+    }
+    .btn-outline:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+    .btn-danger { background: #dc2626; color: white; }
+    .btn-danger:hover { background: #b91c1c; }
+
+    /* 閱讀模式 */
+    #readerView { display: none; }
+    .reader-toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .chapter-content {
+      line-height: 2.1;
+      letter-spacing: 0.05em;
+      white-space: pre-wrap;
+      word-break: break-word;
+      margin: 32px 0;
+    }
+    .chapter-nav-btn {
+      display: flex;
+      justify-content: space-between;
+      border-top: 1px solid var(--border);
+      padding-top: 20px;
+      margin-top: 40px;
+    }
+
+    /* 彈窗樣式 */
+    .modal-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 100;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      box-sizing: border-box;
+    }
+    .modal-box {
+      background: var(--card-bg);
+      color: var(--text);
+      border-radius: 12px;
+      padding: 24px;
+      width: 100%;
+      max-width: 480px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    }
+    .modal-box-lg {
+      max-width: 820px;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    /* 管理員專區表單 */
+    .form-group {
+      margin-bottom: 16px;
+    }
+    .form-group label {
+      display: block;
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+    .form-control {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      background: var(--card-bg);
+      color: var(--text);
+      font-size: 14px;
+    }
+    textarea.form-control {
+      min-height: 80px;
+      resize: vertical;
+    }
+
+    /* 頁尾 */
+    footer {
+      text-align: center;
+      padding: 24px;
+      border-top: 1px solid var(--border);
+      color: var(--sub-text);
+      font-size: 13px;
+    }
+  </style>
+</head>
+<body class="theme-cream">
+
+<!-- 頂部列 -->
+<header>
+  <!-- 站點標題：連續快速點擊 5 次可喚醒管理員登入視窗 -->
+  <div class="site-brand" onclick="handleSecretClick()">
+    <span style="font-size: 22px;">📚</span>
+    <h1 id="brandTitle">雲端書閣</h1>
+  </div>
+  <div style="display:flex; gap:8px; align-items:center;">
+    <button class="btn btn-outline" style="padding:4px 10px; font-size:12px;" onclick="toggleTheme()">切換日/夜</button>
+    <button id="lockReaderBtn" class="btn btn-outline" style="padding:4px 10px; font-size:12px; display:none;" onclick="relockReader()">🔒 上鎖</button>
+  </div>
+</header>
+
+<div class="container">
+  <!-- 首頁視圖 -->
+  <div id="homeView">
+    <div class="hero-banner">
+      <h2 id="homeHeading">歡迎來到雲端書閣</h2>
+      <p id="homeSubheading">閒看庭前花開花落，漫隨天外雲卷雲舒。</p>
+    </div>
+
+    <div class="search-bar">
+      <input type="text" id="searchInput" class="search-input" placeholder="🔍 搜尋書名、作者、內文或標籤..." oninput="handleSearch()">
+    </div>
+
+    <div class="tag-list" id="tagContainer"><button class="tag-btn active">全部</button><button class="tag-btn">古風</button><button class="tag-btn">言情</button></div>
+    <div class="book-grid" id="bookGrid"><div class="book-card">
+        <div>
+          <h3>江海寄餘生</h3>
+          <div class="author">作者：文墨生</div>
+          <div class="desc">少年仗劍天涯，歷經波折，終在煙雨江畔尋得心中歸宿。</div>
+        </div>
+        <div class="book-meta">
+          <span>#古風 #言情</span>
+          <span>共 2 章</span>
+        </div>
+      </div></div>
+  </div>
+
+  <!-- 目錄視圖 -->
+  <div id="detailView" style="display:none;">
+    <button class="btn btn-outline" style="margin-bottom:16px;" onclick="showHome()">← 返回書庫</button>
+    <h2 id="detailTitle" style="margin: 0 0 6px 0;"></h2>
+    <div id="detailAuthor" style="color:var(--sub-text); margin-bottom:16px; font-size:14px;"></div>
+    <p id="detailDesc" style="line-height:1.7; margin-bottom:24px; color:var(--text);"></p>
+    
+    <h3 style="border-bottom: 1px solid var(--border); padding-bottom:8px;">章節目錄</h3>
+    <div id="chapterList" style="display:flex; flex-direction:column; gap:10px;"></div>
+  </div>
+
+  <!-- 閱讀視圖 -->
+  <div id="readerView">
+    <div class="reader-toolbar">
+      <button class="btn btn-outline" onclick="showDetail()">← 返回目錄</button>
+      <div style="display:flex; gap:8px; align-items:center;">
+        <span style="font-size:13px; color:var(--sub-text);">字體：</span>
+        <button class="btn btn-outline" style="padding:2px 8px;" onclick="changeFontSize(-2)">A-</button>
+        <button class="btn btn-outline" style="padding:2px 8px;" onclick="changeFontSize(2)">A+</button>
+      </div>
+    </div>
+    <h2 id="readerBookTitle" style="text-align:center; margin-bottom:6px;"></h2>
+    <div id="readerChapterTitle" style="text-align:center; color:var(--sub-text); margin-bottom:28px; font-size:15px;"></div>
+    <div class="chapter-content" id="readerContent" style="font-size: 18px;"></div>
+    <div class="chapter-nav-btn">
+      <button class="btn btn-outline" id="prevChapterBtn" onclick="navigateChapter(-1)">上一章</button>
+      <button class="btn btn-outline" id="nextChapterBtn" onclick="navigateChapter(1)">下一章</button>
+    </div>
+  </div>
+</div>
+
+<footer id="footerText">© 2026 雲端書閣 · 個人小說收藏</footer>
+
+<!-- 讀者輸入密碼解鎖彈窗 -->
+<div id="readerAuthModal" class="modal-backdrop">
+  <div class="modal-box">
+    <h3 style="margin-top:0;">🔐 輸入閱讀密碼</h3>
+    <p style="font-size:14px; color:var(--sub-text);">本書庫已開啟閱讀保護，請輸入統一密碼以繼續閱讀：</p>
+    <input type="password" id="readerPasswordInput" class="form-control" placeholder="請輸入密碼" style="margin-bottom:16px;">
+    <div style="display:flex; justify-content:flex-end; gap:8px;">
+      <button class="btn btn-outline" onclick="closeModal('readerAuthModal')">取消</button>
+      <button class="btn" onclick="verifyReaderPassword()">解鎖閱讀</button>
+    </div>
+  </div>
+</div>
+
+<!-- 站長管理員登入彈窗（隱藏暗號喚醒） -->
+<div id="adminAuthModal" class="modal-backdrop" style="display: none;">
+  <div class="modal-box">
+    <h3 style="margin-top:0;">🛡️ 站長身分驗證</h3>
+    <p style="font-size:14px; color:var(--sub-text);">請輸入管理員密碼以進入後台編輯與發布介面：</p>
+    <input type="password" id="adminPasswordInput" class="form-control" placeholder="預設密碼 admin888" style="margin-bottom:16px;">
+    <div style="display:flex; justify-content:flex-end; gap:8px;">
+      <button class="btn btn-outline" onclick="closeModal('adminAuthModal')">取消</button>
+      <button class="btn" onclick="verifyAdminPassword()">進入後台</button>
+    </div>
+  </div>
+</div>
+
+<!-- 站長管理後台彈窗 -->
+<div id="adminPanelModal" class="modal-backdrop" style="display: flex;">
+  <div class="modal-box modal-box-lg">
+    <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--border); padding-bottom:12px; margin-bottom:20px;">
+      <h2 style="margin:0;">⚙️ 站長管理專區</h2>
+      <button class="btn btn-outline" onclick="closeModal('adminPanelModal')">✕ 關閉</button>
+    </div>
+
+    <!-- 首頁資訊自訂設定 -->
+    <h3 style="margin-top:0;">🏠 首頁網站資訊設定</h3>
+    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
+      <div class="form-group">
+        <label>網站標題（Logo）</label>
+        <input type="text" id="adminSiteTitle" class="form-control">
+      </div>
+      <div class="form-group">
+        <label>首頁大標題</label>
+        <input type="text" id="adminHomeHeading" class="form-control">
+      </div>
+    </div>
+    <div class="form-group">
+      <label>首頁副標題 / 歡迎公告語</label>
+      <input type="text" id="adminHomeSubheading" class="form-control">
+    </div>
+    <div class="form-group">
+      <label>頁尾版權文字</label>
+      <input type="text" id="adminFooterText" class="form-control">
+    </div>
+
+    <!-- 密碼設定 -->
+    <h3 style="margin-top:24px;">🔑 密碼安全性設定</h3>
+    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
+      <div class="form-group">
+        <label>讀者閱讀密碼（統一解鎖用）</label>
+        <input type="text" id="adminReaderPass" class="form-control">
+      </div>
+      <div class="form-group">
+        <label>站長管理密碼（進後台用）</label>
+        <input type="text" id="adminManagePass" class="form-control">
+      </div>
+    </div>
+
+    <!-- 書籍管理 -->
+    <h3 style="margin-top:24px;">📖 新增小說</h3>
+    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
+      <div class="form-group">
+        <label>書名</label>
+        <input type="text" id="newBookTitle" class="form-control" placeholder="例：長夜微光">
+      </div>
+      <div class="form-group">
+        <label>作者</label>
+        <input type="text" id="newBookAuthor" class="form-control" placeholder="例：無名氏">
+      </div>
+    </div>
+    <div class="form-group">
+      <label>標籤（以空格分隔）</label>
+      <input type="text" id="newBookTags" class="form-control" placeholder="例：古風 武俠 原創">
+    </div>
+    <div class="form-group">
+      <label>書籍簡介</label>
+      <textarea id="newBookDesc" class="form-control" placeholder="填寫小說簡介..."></textarea>
+    </div>
+    <button class="btn" onclick="addNewBook()">➕ 加入書庫</button>
+
+    <h3 style="margin-top:28px;">📚 現有書籍與章節管理 (<span id="adminBookCount">0</span>)</h3>
+    <div id="adminBookList" style="display:flex; flex-direction:column; gap:14px;"></div>
+
+    <!-- 打包與更新 -->
+    <div style="margin-top:36px; padding:20px; background:rgba(139,94,60,0.08); border:1px solid var(--border); border-radius:8px; text-align:center;">
+      <h3 style="margin-top:0; color:var(--primary);">更新完成？一鍵下載部署檔！</h3>
+      <p style="font-size:14px; color:var(--sub-text); margin-bottom:16px;">
+        點擊下方按鈕，系統會把所有修改（包含首頁資訊、小說內容、密碼）直接封裝成最新的 <b>index.html</b> 下載到電腦。<br>
+        接著只需把它拖曳到 Vercel 重新覆蓋，所有人的網站就立刻更新完畢！
+      </p>
+      <button class="btn" style="padding:12px 28px; font-size:16px;" onclick="downloadUpdatedHTML()">💾 儲存並下載最新 index.html</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  /* -------------------------------------------------------------
+     全站核心資料庫（單一檔案架構）
+     ------------------------------------------------------------- */
+  let siteConfig = {
+  "siteTitle": "墨墨看書",
+  "homeHeading": "歡迎來到墨墨藏書閣",
+  "homeSubheading": "閒看庭前花開花落，漫隨天外雲卷雲舒。",
+  "footerText": "個人小說收藏",
+  "readerPassword": "0729",
+  "adminPassword": "mavis0511"
+};
+
+  let books = [];
+
+  /* -------------------------------------------------------------
+     前端狀態控制
+     ------------------------------------------------------------- */
+  let isReaderUnlocked = sessionStorage.getItem("is_reader_unlocked") === "true";
+  let activeBook = null;
+  let activeChapterIdx = 0;
+  let activeFilterTag = "全部";
+  let pendingChapterIdx = null;
+
+  // 快捷鍵進入後台 (Ctrl+Shift+M 或 Cmd+Shift+M)
+  window.addEventListener("keydown", (e) => {
+    if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'M' || e.key === 'm')) {
+      e.preventDefault();
+      openModal('adminAuthModal');
+    }
+  });
+
+  // 手機連點 5 次進入後台
+  let clickCounter = 0;
+  let clickTimer = null;
+  function handleSecretClick() {
+    clickCounter++;
+    clearTimeout(clickTimer);
+    clickTimer = setTimeout(() => { clickCounter = 0; }, 2000);
+
+    if (clickCounter >= 5) {
+      clickCounter = 0;
+      openModal('adminAuthModal');
+    }
+  }
+
+  // 視圖切換
+  function showHome() {
+    document.getElementById("homeView").style.display = "block";
+    document.getElementById("detailView").style.display = "none";
+    document.getElementById("readerView").style.display = "none";
+    window.scrollTo(0,0);
+  }
+
+  function showDetail() {
+    document.getElementById("homeView").style.display = "none";
+    document.getElementById("detailView").style.display = "block";
+    document.getElementById("readerView").style.display = "none";
+    window.scrollTo(0,0);
+  }
+
+  function openBookDetail(id) {
+    activeBook = books.find(b => b.id === id);
+    if (!activeBook) return;
+
+    document.getElementById("detailTitle").textContent = activeBook.title;
+    document.getElementById("detailAuthor").textContent = "作者：" + activeBook.author;
+    document.getElementById("detailDesc").textContent = activeBook.desc;
+
+    const list = document.getElementById("chapterList");
+    list.innerHTML = "";
+    activeBook.chapters.forEach((ch, idx) => {
+      const row = document.createElement("div");
+      row.className = "book-card";
+      row.style.padding = "14px 18px";
+      row.style.flexDirection = "row";
+      row.style.alignItems = "center";
+      row.style.cursor = "pointer";
+      row.innerHTML = `<span>📖 ${ch.title}</span><span style="font-size:13px; color:var(--primary);">進入閱讀 ➔</span>`;
+      row.onclick = () => requestReadChapter(idx);
+      list.appendChild(row);
+    });
+
+    showDetail();
+  }
+
+  function requestReadChapter(idx) {
+    pendingChapterIdx = idx;
+    if (isReaderUnlocked) {
+      openReader(idx);
+    } else {
+      openModal('readerAuthModal');
+      document.getElementById("readerPasswordInput").focus();
+    }
+  }
+
+  function verifyReaderPassword() {
+    const input = document.getElementById("readerPasswordInput").value.trim();
+    if (input === siteConfig.readerPassword) {
+      isReaderUnlocked = true;
+      sessionStorage.setItem("is_reader_unlocked", "true");
+      closeModal('readerAuthModal');
+      document.getElementById("lockReaderBtn").style.display = "inline-block";
+      document.getElementById("readerPasswordInput").value = "";
+      if (pendingChapterIdx !== null) {
+        openReader(pendingChapterIdx);
+      }
+    } else {
+      alert("密碼錯誤，請重新輸入！");
+    }
+  }
+
+  function relockReader() {
+    isReaderUnlocked = false;
+    sessionStorage.removeItem("is_reader_unlocked");
+    document.getElementById("lockReaderBtn").style.display = "none";
+    if (document.getElementById("readerView").style.display === "block") {
+      showDetail();
+    }
+    alert("已重新上鎖！再次閱讀需輸入密碼。");
+  }
+
+  function openReader(idx) {
+    activeChapterIdx = idx;
+    const ch = activeBook.chapters[idx];
+    document.getElementById("readerBookTitle").textContent = activeBook.title;
+    document.getElementById("readerChapterTitle").textContent = ch.title;
+    document.getElementById("readerContent").textContent = ch.content;
+
+    document.getElementById("prevChapterBtn").style.visibility = idx > 0 ? "visible" : "hidden";
+    document.getElementById("nextChapterBtn").style.visibility = idx < activeBook.chapters.length - 1 ? "visible" : "hidden";
+
+    document.getElementById("homeView").style.display = "none";
+    document.getElementById("detailView").style.display = "none";
+    document.getElementById("readerView").style.display = "block";
+    window.scrollTo(0,0);
+  }
+
+  function navigateChapter(dir) {
+    const target = activeChapterIdx + dir;
+    if (target >= 0 && target < activeBook.chapters.length) {
+      openReader(target);
+    }
+  }
+
+  let currentFontSize = 18;
+  function changeFontSize(delta) {
+    currentFontSize = Math.min(28, Math.max(14, currentFontSize + delta));
+    document.getElementById("readerContent").style.fontSize = currentFontSize + "px";
+  }
+
+  function toggleTheme() {
+    document.body.classList.toggle("theme-dark");
+  }
+
+  /* -------------------------------------------------------------
+     渲染首頁與搜尋
+     ------------------------------------------------------------- */
+  function renderUI() {
+    // 渲染站點資訊
+    document.getElementById("brandTitle").textContent = siteConfig.siteTitle;
+    document.getElementById("pageTitle").textContent = siteConfig.siteTitle;
+    document.getElementById("homeHeading").textContent = siteConfig.homeHeading;
+    document.getElementById("homeSubheading").textContent = siteConfig.homeSubheading;
+    document.getElementById("footerText").textContent = siteConfig.footerText;
+
+    if (isReaderUnlocked) {
+      document.getElementById("lockReaderBtn").style.display = "inline-block";
+    }
+
+    renderTags();
+    renderBooks(books);
+  }
+
+  function renderTags() {
+    const set = new Set(["全部"]);
+    books.forEach(b => (b.tags || []).forEach(t => set.add(t)));
+    const container = document.getElementById("tagContainer");
+    container.innerHTML = "";
+    set.forEach(tag => {
+      const btn = document.createElement("button");
+      btn.className = "tag-btn" + (tag === activeFilterTag ? " active" : "");
+      btn.textContent = tag;
+      btn.onclick = () => { activeFilterTag = tag; renderTags(); handleSearch(); };
+      container.appendChild(btn);
+    });
+  }
+
+  function renderBooks(list) {
+    const grid = document.getElementById("bookGrid");
+    grid.innerHTML = "";
+    if (list.length === 0) {
+      grid.innerHTML = '<div style="grid-column: 1/-1; text-align:center; padding: 40px; color:var(--sub-text);">尚無符合條件的書籍</div>';
+      return;
+    }
+    list.forEach(b => {
+      const card = document.createElement("div");
+      card.className = "book-card";
+      card.onclick = () => openBookDetail(b.id);
+      card.innerHTML = `
+        <div>
+          <h3>${b.title}</h3>
+          <div class="author">作者：${b.author}</div>
+          <div class="desc">${b.desc}</div>
+        </div>
+        <div class="book-meta">
+          <span>${(b.tags || []).map(t => '#' + t).join(' ')}</span>
+          <span>共 ${b.chapters.length} 章</span>
+        </div>
+      `;
+      grid.appendChild(card);
+    });
+  }
+
+  function handleSearch() {
+    const q = document.getElementById("searchInput").value.trim().toLowerCase();
+    const result = books.filter(b => {
+      const matchTag = (activeFilterTag === "全部") || (b.tags && b.tags.includes(activeFilterTag));
+      const matchText = b.title.toLowerCase().includes(q) ||
+                        b.author.toLowerCase().includes(q) ||
+                        b.desc.toLowerCase().includes(q) ||
+                        b.chapters.some(c => c.title.toLowerCase().includes(q) || c.content.toLowerCase().includes(q));
+      return matchTag && matchText;
+    });
+    renderBooks(result);
+  }
+
+  /* -------------------------------------------------------------
+     管理員專區功能
+     ------------------------------------------------------------- */
+  function verifyAdminPassword() {
+    const input = document.getElementById("adminPasswordInput").value.trim();
+    if (input === siteConfig.adminPassword) {
+      closeModal('adminAuthModal');
+      document.getElementById("adminPasswordInput").value = "";
+      openAdminPanel();
+    } else {
+      alert("管理員密碼錯誤！");
+    }
+  }
+
+  function openAdminPanel() {
+    // 填入目前設定
+    document.getElementById("adminSiteTitle").value = siteConfig.siteTitle;
+    document.getElementById("adminHomeHeading").value = siteConfig.homeHeading;
+    document.getElementById("adminHomeSubheading").value = siteConfig.homeSubheading;
+    document.getElementById("adminFooterText").value = siteConfig.footerText;
+    document.getElementById("adminReaderPass").value = siteConfig.readerPassword;
+    document.getElementById("adminManagePass").value = siteConfig.adminPassword;
+
+    renderAdminBooks();
+    openModal('adminPanelModal');
+  }
+
+  function renderAdminBooks() {
+    document.getElementById("adminBookCount").textContent = books.length;
+    const container = document.getElementById("adminBookList");
+    container.innerHTML = "";
+
+    books.forEach((b, bIdx) => {
+      const div = document.createElement("div");
+      div.style.border = "1px solid var(--border)";
+      div.style.borderRadius = "8px";
+      div.style.padding = "14px";
+      div.style.background = "var(--bg)";
+
+      let chListHtml = b.chapters.map((ch, cIdx) => `
+        <div style="display:flex; justify-content:space-between; align-items:center; background:var(--card-bg); padding:6px 10px; border-radius:4px; margin-top:6px; font-size:13px; border:1px solid var(--border);">
+          <span>${ch.title}</span>
+          <button class="btn btn-danger" style="padding:2px 8px; font-size:12px;" onclick="deleteAdminChapter(${bIdx}, ${cIdx})">刪除章節</button>
+        </div>
+      `).join("");
+
+      div.innerHTML = `
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <strong>${b.title} <span style="font-size:13px; color:var(--sub-text);">/ ${b.author}</span></strong>
+          <button class="btn btn-danger" style="padding:3px 10px; font-size:12px;" onclick="deleteAdminBook(${bIdx})">刪除整本書</button>
+        </div>
+        <p style="font-size:13px; color:var(--sub-text); margin: 6px 0 10px 0;">${b.desc}</p>
+        <div style="margin-top:8px;">
+          <small style="font-weight:600;">章節列表 (${b.chapters.length})</small>
+          ${chListHtml || '<div style="font-size:12px; color:var(--sub-text);">尚無章節</div>'}
+        </div>
+        <div style="margin-top:10px; padding:10px; background:var(--card-bg); border-radius:6px; border:1px solid var(--border);">
+          <input type="text" id="adminNewChTitle_${bIdx}" placeholder="新章節名稱 (例如：第三章 白露)" class="form-control" style="margin-bottom:6px; font-size:13px;">
+          <textarea id="adminNewChContent_${bIdx}" placeholder="貼上章節小說內文..." class="form-control" style="font-size:13px; min-height:60px;"></textarea>
+          <button class="btn btn-outline" style="margin-top:6px; font-size:12px; padding:4px 10px;" onclick="addAdminChapter(${bIdx})">➕ 新增章節</button>
+        </div>
+      `;
+      container.appendChild(div);
+    });
+  }
+
+  function addNewBook() {
+    const title = document.getElementById("newBookTitle").value.trim();
+    const author = document.getElementById("newBookAuthor").value.trim() || "佚名";
+    const tags = document.getElementById("newBookTags").value.split(" ").filter(t => t.trim());
+    const desc = document.getElementById("newBookDesc").value.trim();
+
+    if (!title) { alert("書名不可為空！"); return; }
+
+    books.push({
+      id: "b_" + Date.now(),
+      title, author, tags, desc,
+      chapters: []
+    });
+
+    document.getElementById("newBookTitle").value = "";
+    document.getElementById("newBookAuthor").value = "";
+    document.getElementById("newBookTags").value = "";
+    document.getElementById("newBookDesc").value = "";
+    renderAdminBooks();
+  }
+
+  function deleteAdminBook(idx) {
+    if (confirm(`確定要刪除《${books[idx].title}》嗎？`)) {
+      books.splice(idx, 1);
+      renderAdminBooks();
+    }
+  }
+
+  function addAdminChapter(bIdx) {
+    const t = document.getElementById(`adminNewChTitle_${bIdx}`).value.trim();
+    const c = document.getElementById(`adminNewChContent_${bIdx}`).value.trim();
+    if (!t || !c) { alert("章節名稱與內文皆不可為空！"); return; }
+    books[bIdx].chapters.push({ title: t, content: c });
+    renderAdminBooks();
+  }
+
+  function deleteAdminChapter(bIdx, cIdx) {
+    books[bIdx].chapters.splice(cIdx, 1);
+    renderAdminBooks();
+  }
+
+  /* -------------------------------------------------------------
+     儲存並產生最新 index.html
+     ------------------------------------------------------------- */
+  function syncSettingsFromInputs() {
+    siteConfig.siteTitle = document.getElementById("adminSiteTitle").value.trim() || siteConfig.siteTitle;
+    siteConfig.homeHeading = document.getElementById("adminHomeHeading").value.trim() || siteConfig.homeHeading;
+    siteConfig.homeSubheading = document.getElementById("adminHomeSubheading").value.trim() || siteConfig.homeSubheading;
+    siteConfig.footerText = document.getElementById("adminFooterText").value.trim() || siteConfig.footerText;
+    siteConfig.readerPassword = document.getElementById("adminReaderPass").value.trim() || siteConfig.readerPassword;
+    siteConfig.adminPassword = document.getElementById("adminManagePass").value.trim() || siteConfig.adminPassword;
+  }
+
+  function downloadUpdatedHTML() {
+    syncSettingsFromInputs();
+
+    // 取得當前整個 HTML 的文本
+    let fullHTML = "<!DOCTYPE html>\n" + document.documentElement.outerHTML;
+
+    // 將最新的 siteConfig 與 books 注入回程式碼中
+    const configRegex = /let siteConfig = \{[\s\S]*?\};/;
+    const booksRegex = /let books = \[[\s\S]*?\];/;
+
+    fullHTML = fullHTML.replace(configRegex, `let siteConfig = ${JSON.stringify(siteConfig, null, 2)};`);
+    fullHTML = fullHTML.replace(booksRegex, `let books = ${JSON.stringify(books, null, 2)};`);
+
+    // 下載成 index.html
+    const blob = new Blob([fullHTML], { type: "text/html;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "index.html";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+
+    renderUI();
+    closeModal('adminPanelModal');
+    alert("🎉 已成功下載最新的 index.html！\n請直接拖曳覆蓋至 Vercel 即可完成更新！");
+  }
+
+  /* 彈窗工具 */
+  function openModal(id) { document.getElementById(id).style.display = "flex"; }
+  function closeModal(id) { document.getElementById(id).style.display = "none"; }
+
+  // 初始化啟動
+  renderUI();
+</script>
+
+
+</body></html>
